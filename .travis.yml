@@ -11,7 +11,7 @@ deploy:
   secret_access_key: $AWS_SECRET_ACCESS_KEY
   function_name: messageStore
   region: us-east-1
-  handler_name: index.handler
+  handler_name: handler
   runtime: nodejs4.3
   publish: true 
   #zip: index.js
