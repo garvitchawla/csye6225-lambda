@@ -8,7 +8,6 @@ exports.handler = function(event, context) {
   var SnsMessage = event.Records[0].Sns.Message;
   console.log(SnsMessage);
   var Snsuseremail = SnsMessage.split(':')[0];
-  console.log(Snsuseremail);
   var ResetToken = SnsMessage.split(':')[1];
   var itemParams = {Item: {email: {S: Snsuseremail},
   token: {S: ResetToken}, }};
