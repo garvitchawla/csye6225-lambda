@@ -9,9 +9,9 @@ deploy:
   provider: lambda
   access_key_id: $AWS_ACCESS_KEY_ID
   secret_access_key: $AWS_SECRET_ACCESS_KEY
-  function_name: test_function_4
+  function_name: SendEmailfunction
   region: us-east-1
-  handler_name: myHandler
+  handler_name: index.SendEmailfunction
   runtime: nodejs4.3
   publish: true 
   #zip: index.js
