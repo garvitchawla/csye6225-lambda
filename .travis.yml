@@ -21,7 +21,7 @@ deploy:
     all_branches: true
 
 before_deploy:
-   - zip -r deploy.zip index.js
+   - zip -r deploy.zip index.js package.json node_modules/
 
 after_deploy:
    - unzip -l deploy.zip 
