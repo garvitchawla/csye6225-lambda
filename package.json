@@ -1,0 +1,14 @@
+{
+  "name": "web-dev",
+  "version": "1.0.0",
+  "description": "Web Dev at Northeastern University",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.331.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Palak"
+}
