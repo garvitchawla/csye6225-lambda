@@ -26,7 +26,7 @@ exports.handler = function(event, context) {
   ddb.getItem(getparams, function(err, data) {
     console.log(err, data);
     console.log(data);
-  if (data) {
+  if (data.length > 0 ) {
     console.log(data.Key);
     console.log("Already Present", data);
   } else {
