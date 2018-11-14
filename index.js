@@ -1,5 +1,6 @@
 console.log('Loading event');
 var aws = require('aws-sdk');
+
 var ddb = new aws.DynamoDB({params: {TableName: 'snstable'}});
 
 exports.handler = function(event, context) {
@@ -7,6 +8,13 @@ exports.handler = function(event, context) {
   //var SnsMessageId = event.Records[0].Sns.MessageId;
   var SnsMessage = event.Records[0].Sns.Message;
   console.log(SnsMessage);
+
+var ddb = new aws.DynamoDB({params: {TableName: 'snslambda'}});
+
+exports.handler = function(event, context) {
+  //var SnsMessageId = event.Records[0].Sns.MessageId;
+  var SnsMessage = event.Records[0].Sns.Message;
+
   var Snsuseremail = SnsMessage.split(':')[0];
   var ResetToken = SnsMessage.split(':')[1];
   var itemParams = {Item: {email: {S: Snsuseremail},
@@ -16,11 +24,16 @@ exports.handler = function(event, context) {
   // });
   
   var getparams = {
+
   TableName: 'snstable',
+
+  TableName: 'snslambda',
+
   Key: {
     'email' : {S: Snsuseremail},
   }
 };
+
 
 
   ddb.getItem(getparams, function(err, data) {
@@ -32,6 +45,14 @@ exports.handler = function(event, context) {
   } else {
     ddb.putItem(itemParams, function() {
       console.log(itemParams);
+
+  ddb.getItem(getparams, function(err, data) {
+    console.log(err, data);
+  if (data) {
+    console.log("Already Present", data);
+  } else {
+    ddb.putItem(itemParams, function() {
+
     context.done(null, '');
 });
   }
@@ -92,6 +113,3 @@ exports.handler = function(event, context) {
           context.done(null, "Failed");
         });
   
-};
-  
-
