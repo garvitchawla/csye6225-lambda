@@ -9,7 +9,7 @@ deploy:
   provider: lambda
   access_key_id: $AWS_ACCESS_KEY_ID
   secret_access_key: $AWS_SECRET_ACCESS_KEY
-  function_name: messageStore
+  function_name: SendEmailfunction
   region: us-east-1
   handler_name: handler
   runtime: nodejs4.3
