@@ -1,6 +1,5 @@
 console.log('Loading event');
 var aws = require('aws-sdk');
-
 var ddb = new aws.DynamoDB({params: {TableName: 'snstable'}});
 
 exports.handler = function(event, context) {
@@ -8,51 +7,45 @@ exports.handler = function(event, context) {
   //var SnsMessageId = event.Records[0].Sns.MessageId;
   var SnsMessage = event.Records[0].Sns.Message;
   console.log(SnsMessage);
-
-var ddb = new aws.DynamoDB({params: {TableName: 'snslambda'}});
-
-exports.handler = function(event, context) {
-  //var SnsMessageId = event.Records[0].Sns.MessageId;
-  var SnsMessage = event.Records[0].Sns.Message;
-
   var Snsuseremail = SnsMessage.split(':')[0];
   var ResetToken = SnsMessage.split(':')[1];
+  var ttl = SnsMessage.split(':')[2];
   var itemParams = {Item: {email: {S: Snsuseremail},
-  token: {S: ResetToken}, }};
+  token: {S: ResetToken}, ttl : {N: ttl}}};
+  var sourceadd = process.env.SOURCEADD;
   // ddb.putItem(itemParams, function() {
   //   context.done(null,'');
   // });
   
   var getparams = {
-
   TableName: 'snstable',
-
-  TableName: 'snslambda',
-
   Key: {
     'email' : {S: Snsuseremail},
   }
 };
 
-
-
+// var data1 =  await ddb.getItem(getparams).promise();
+// console.log(data1);
+// var len = Object.keys(data1).length ;
+// if(len===0)
+// {
+//   var res = await ddb.putItem(itemParams).promise();
+//   console.log(res);
+//   console.log("Add kr de");
+// }
+// else{
+//   console.log("Already Present");
+// }
+ 
+ 
   ddb.getItem(getparams, function(err, data) {
-    console.log(err, data);
-    console.log(data);
-  if (data.length > 0 ) {
+    var len = Object.keys(data).length;
+  if (len>0) {
     console.log(data.Key);
     console.log("Already Present", data);
   } else {
     ddb.putItem(itemParams, function() {
       console.log(itemParams);
-
-  ddb.getItem(getparams, function(err, data) {
-    console.log(err, data);
-  if (data) {
-    console.log("Already Present", data);
-  } else {
-    ddb.putItem(itemParams, function() {
-
     context.done(null, '');
 });
   }
@@ -95,9 +88,14 @@ exports.handler = function(event, context) {
             Data: "Password Reset Link"
           }
         },
-        Source: " Hi from <palak@csye6225-fall2018-sharmapa.me>"
+        Source: sourceadd
       };
   // Create the promise and SES service object
+  ddb.getItem(getparams, function(err, data) {
+    var len = Object.keys(data).length;
+  if (len>0) {
+    console.log("Mail already sent");
+  } else {
       const sendPromise = new aws.SES({ apiVersion: "2010-12-01" })
         .sendEmail(params)
         .promise();
@@ -113,3 +111,7 @@ exports.handler = function(event, context) {
           context.done(null, "Failed");
         });
   
+
+  }});
+
+};
