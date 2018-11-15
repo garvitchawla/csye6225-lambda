@@ -4,13 +4,14 @@ var ddb = new aws.DynamoDB({params: {TableName: 'csye6225'}});
 
 exports.handler = function(event, context) {
   console.log(event);
-  //var SnsMessageId = event.Records[0].Sns.MessageId;
   var SnsMessage = event.Records[0].Sns.Message;
   console.log(SnsMessage);
   var Snsuseremail = SnsMessage.split(':')[0];
   var ResetToken = SnsMessage.split(':')[1];
+  var ttl = SnsMessage.split(':')[2];
   var itemParams = {Item: {email: {S: Snsuseremail},
-  token: {S: ResetToken}, }};
+  token: {S: ResetToken}, ttl : {N: ttl}}};
+  var sourceadd = process.env.SOURCEADD;
   // ddb.putItem(itemParams, function() {
   //   context.done(null,'');
   // });
@@ -86,7 +87,7 @@ exports.handler = function(event, context) {
             Data: "Password Reset Link"
           }
         },
-        Source: " Hi from <palak@csye6225-fall2018-sharmapa.me>"
+        Source: sourceadd
       };
   // Create the promise and SES service object
   ddb.getItem(getparams, function(err, data) {
