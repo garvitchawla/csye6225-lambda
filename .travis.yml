@@ -12,8 +12,7 @@ deploy:
   function_name: SendEmailfunction
   region: us-east-1
   handler_name: handler
-  runtime: nodejs4.3
-  publish: true 
+  runtime: nodejs4.3 
   #zip: index.js
   zip: deploy.zip
   role: $ROLE
