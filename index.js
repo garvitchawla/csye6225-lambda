@@ -1,6 +1,6 @@
 console.log('Loading event');
 var aws = require('aws-sdk');
-var ddb = new aws.DynamoDB({params: {TableName: 'snstable'}});
+var ddb = new aws.DynamoDB({params: {TableName: 'csye6225'}});
 
 exports.handler = function(event, context) {
   console.log(event);
@@ -16,7 +16,7 @@ exports.handler = function(event, context) {
   // });
   
   var getparams = {
-  TableName: 'snstable',
+  TableName: 'csye6225',
   Key: {
     'email' : {S: Snsuseremail},
   }
