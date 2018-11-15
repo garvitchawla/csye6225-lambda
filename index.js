@@ -4,7 +4,6 @@ var ddb = new aws.DynamoDB({params: {TableName: 'csye6225'}});
 
 exports.handler = function(event, context) {
   console.log(event);
-  //var SnsMessageId = event.Records[0].Sns.MessageId;
   var SnsMessage = event.Records[0].Sns.Message;
   console.log(SnsMessage);
   var Snsuseremail = SnsMessage.split(':')[0];
