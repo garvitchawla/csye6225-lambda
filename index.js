@@ -12,6 +12,7 @@ exports.handler = function(event, context) {
   var itemParams = {Item: {email: {S: Snsuseremail},
   token: {S: ResetToken}, ttl : {N: ttl}}};
   var sourceadd = process.env.SOURCEADD;
+  var domain_name = process.env.DOMAIN;
   // ddb.putItem(itemParams, function() {
   //   context.done(null,'');
   // });
@@ -68,9 +69,8 @@ exports.handler = function(event, context) {
       }
   const textBody = 'This is for DEMO. You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
         'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-        'http://'+'reset?email=' + Snsuseremail + '&' + 'token=' + ResetToken + '\n\n'+
+        'http://'+ domain_name + '/reset?email=' + Snsuseremail + '&' + 'token=' + ResetToken + '\n\n'+
         'If you did not request this, please ignore this email and your password will remain unchanged.\n';
-        
   const params = {
         Destination: {
           ToAddresses: [Snsuseremail]
